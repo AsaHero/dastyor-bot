@@ -1,0 +1,1 @@
+[31mERROR  [0m[0000] time: invalid duration "q"                    [31mcallee[0m="(*App)" [31mcaller[0m="Run" [31mlocation[0m="/home/asad/go/src/github.com/AsaHero/dastyor-bot/internal/app/app.go:40" [31mscope[0m="github"
