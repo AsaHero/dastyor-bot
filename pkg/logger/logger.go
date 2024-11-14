@@ -19,12 +19,7 @@ func Init(cfg *config.Config, logFileName string) *logrus.Logger {
 		log = logrus.New()
 
 		// Set output format to JSON
-		log.SetFormatter(&logrus.TextFormatter{
-			ForceQuote:       true,
-			PadLevelText:     true,
-			ForceColors:      true,
-			QuoteEmptyFields: true,
-		})
+		log.SetFormatter(&OrderedJSONFormatter{})
 
 		// Setting up file output
 		logFile, err := os.OpenFile(logFileName, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)

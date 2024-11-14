@@ -14,21 +14,33 @@ type usersService struct {
 	repo           users.Repository
 }
 
-func NewUsersService(contextTimeout time.Duration, repo users.Repository) Users {
+func New(contextTimeout time.Duration, repo users.Repository) Users {
 	return &usersService{
 		contextTimeout: contextTimeout,
 		repo:           repo,
 	}
 }
 
-func (s *usersService) GetByExternalID(ctx context.Context, externalID int64) (*entity.Users, error) {
+func (s *usersService) GetByExternalID(ctx context.Context, userID int64) (*entity.Users, error) {
 	ctx, cancel := context.WithTimeout(ctx, s.contextTimeout)
 	defer cancel()
 
-	user, err := s.repo.FindOne(ctx, map[string]any{"external_id": externalID})
+	user, err := s.repo.FindOne(ctx, map[string]any{"id": userID})
 	if err != nil {
 		return nil, inerr.Err(err)
 	}
 
 	return user, nil
+}
+
+func (s *usersService) Upsert(ctx context.Context, user *entity.Users) error {
+	ctx, cancel := context.WithTimeout(ctx, s.contextTimeout)
+	defer cancel()
+
+	err := s.repo.Upsert(ctx, []string{"username", "first_name", "last_name"}, user)
+	if err != nil {
+		return inerr.Err(err)
+	}
+
+	return nil
 }

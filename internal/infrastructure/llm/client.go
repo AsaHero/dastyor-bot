@@ -14,7 +14,7 @@ type apiClient struct {
 	client *openai.Client
 }
 
-func NewApiClient(cfg *config.Config) (LLM, error) {
+func New(cfg *config.Config) (LlmAPI, error) {
 	client := openai.NewClient(cfg.LLM.SecretKey)
 
 	return &apiClient{
@@ -35,7 +35,7 @@ func (c *apiClient) ChatCompletionStreaming(ctx context.Context, system string, 
 	chatCompletionMessages = append(chatCompletionMessages, messages...)
 
 	req := openai.ChatCompletionRequest{
-		Model:    openai.GPT4o,
+		Model:    openai.GPT3Dot5Turbo,
 		Stream:   true,
 		Messages: chatCompletionMessages,
 	}
